@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = os.getenv("DATABASE_URL")
 
+    # OpenAI
+    OPENAI_API_KEY: str | None = None
+
     # CORS
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
