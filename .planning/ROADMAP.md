@@ -84,6 +84,11 @@ Plans:
 2. Week-over-week comparison shows improvement or decline percentage
 3. Trend data is structured for mobile visualization consumption
 
+**Plans:** 1 plan
+
+Plans:
+- [ ] 04-01-PLAN.md — TrendService, schemas, and API endpoint for goal trends
+
 ---
 
 ### Phase 5: Verdict Generation
@@ -149,7 +154,7 @@ Plans:
 | 1 | Voice Transcription | VOICE-01, VOICE-02 | Complete |
 | 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Not Started |
 | 3 | Signal Extraction | EXTR-01, EXTR-02 | Not Started |
-| 4 | Historical Trends | HIST-01 | Not Started |
+| 4 | Historical Trends | HIST-01 | Planned |
 | 5 | Verdict Generation | VERD-01, VERD-02, VERD-03 | Not Started |
 | 6 | Evening Orchestration | ORCH-01, ORCH-02 | Not Started |
 | 7 | Smart Notifications | NOTIF-01, NOTIF-02 | Not Started |
