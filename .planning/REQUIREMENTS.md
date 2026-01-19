@@ -9,8 +9,8 @@ Requirements for AI evaluation pipeline. Each maps to roadmap phases.
 
 ### Voice Input
 
-- [ ] **VOICE-01**: User can record voice entry that gets transcribed to text
-- [ ] **VOICE-02**: Transcription handles multiple entries per day (accumulates)
+- [x] **VOICE-01**: User can record voice entry that gets transcribed to text
+- [x] **VOICE-02**: Transcription handles multiple entries per day (accumulates)
 
 ### Signal Extraction
 
@@ -84,8 +84,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VOICE-01 | Phase 1 | Pending |
-| VOICE-02 | Phase 1 | Pending |
+| VOICE-01 | Phase 1 | Complete |
+| VOICE-02 | Phase 1 | Complete |
 | EXTR-01 | Phase 3 | Pending |
 | EXTR-02 | Phase 3 | Pending |
 | SCORE-01 | Phase 2 | Pending |
@@ -108,4 +108,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-19*
-*Last updated: 2026-01-19 after roadmap creation*
+*Last updated: 2026-01-19 after Phase 1 completion*

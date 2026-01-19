@@ -25,6 +25,11 @@ This roadmap delivers the AI evaluation pipeline for daily journaling analysis. 
 2. Multiple voice entries in one day accumulate into the journal (not replace)
 3. Transcription accuracy is sufficient for downstream analysis (95%+ for clear speech)
 
+**Plans:** 1 plan
+
+Plans:
+- [x] 01-01-PLAN.md — Voice transcription endpoint with OpenAI Whisper API
+
 ---
 
 ### Phase 2: Scoring Foundation
@@ -141,7 +146,7 @@ This roadmap delivers the AI evaluation pipeline for daily journaling analysis. 
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 1 | Voice Transcription | VOICE-01, VOICE-02 | Not Started |
+| 1 | Voice Transcription | VOICE-01, VOICE-02 | Complete |
 | 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Not Started |
 | 3 | Signal Extraction | EXTR-01, EXTR-02 | Not Started |
 | 4 | Historical Trends | HIST-01 | Not Started |
