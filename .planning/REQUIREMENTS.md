@@ -1,7 +1,7 @@
 # Requirements: Am I Better Than Yesterday?
 
 **Defined:** 2026-01-19
-**Core Value:** Consistency and momentum toward personal goals — the AI must accurately determine if today's effort maintained or exceeded yesterday's.
+**Core Value:** Consistency and momentum toward personal goals - the AI must accurately determine if today's effort maintained or exceeded yesterday's.
 
 ## v1 Requirements
 
@@ -70,7 +70,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Feature | Reason |
 |---------|--------|
-| Mobile app UI | Deferred to next milestone — backend first |
+| Mobile app UI | Deferred to next milestone - backend first |
 | On-device RAG | Requires mobile-specific architecture, defer to mobile milestone |
 | Real-time chat/coaching | Single daily verdict is the core UX |
 | Social features | Personal growth is private |
@@ -84,28 +84,28 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VOICE-01 | TBD | Pending |
-| VOICE-02 | TBD | Pending |
-| EXTR-01 | TBD | Pending |
-| EXTR-02 | TBD | Pending |
-| SCORE-01 | TBD | Pending |
-| SCORE-02 | TBD | Pending |
-| SCORE-03 | TBD | Pending |
-| SCORE-04 | TBD | Pending |
-| HIST-01 | TBD | Pending |
-| VERD-01 | TBD | Pending |
-| VERD-02 | TBD | Pending |
-| VERD-03 | TBD | Pending |
-| ORCH-01 | TBD | Pending |
-| ORCH-02 | TBD | Pending |
-| NOTIF-01 | TBD | Pending |
-| NOTIF-02 | TBD | Pending |
+| VOICE-01 | Phase 1 | Pending |
+| VOICE-02 | Phase 1 | Pending |
+| EXTR-01 | Phase 3 | Pending |
+| EXTR-02 | Phase 3 | Pending |
+| SCORE-01 | Phase 2 | Pending |
+| SCORE-02 | Phase 2 | Pending |
+| SCORE-03 | Phase 2 | Pending |
+| SCORE-04 | Phase 2 | Pending |
+| HIST-01 | Phase 4 | Pending |
+| VERD-01 | Phase 5 | Pending |
+| VERD-02 | Phase 5 | Pending |
+| VERD-03 | Phase 5 | Pending |
+| ORCH-01 | Phase 6 | Pending |
+| ORCH-02 | Phase 6 | Pending |
+| NOTIF-01 | Phase 7 | Pending |
+| NOTIF-02 | Phase 7 | Pending |
 
 **Coverage:**
 - v1 requirements: 16 total
-- Mapped to phases: 0
-- Unmapped: 16
+- Mapped to phases: 16
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-19*
-*Last updated: 2026-01-19 after initial definition*
+*Last updated: 2026-01-19 after roadmap creation*
