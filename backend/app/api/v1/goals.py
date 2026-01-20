@@ -1,9 +1,11 @@
 from uuid import UUID
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Query
 
 from app.deps import DbSession, CurrentUser
 from app.schemas.goal import GoalCreate, GoalRead, GoalUpdate
 from app.services.goal_service import GoalService
+from app.services.extraction_service import ExtractionService
+from app.ai_pipeline.schemas.extraction import GoalSuggestion
 
 router = APIRouter(prefix="/goals", tags=["goals"])
 
@@ -17,6 +19,23 @@ async def list_goals(
     service = GoalService(db)
     goals = await service.list(current_user.id)
     return goals
+
+
+@router.get("/suggestions", response_model=list[GoalSuggestion])
+async def get_goal_suggestions(
+    db: DbSession,
+    current_user: CurrentUser,
+    lookback_days: int = Query(30, ge=7, le=90, description="Days to analyze for patterns"),
+):
+    """
+    Get suggested goals based on recurring patterns in journal entries.
+
+    Analyzes extracted metrics over the lookback period to find activities
+    that don't match existing goals, suggesting areas for new focus.
+    """
+    service = ExtractionService(db)
+    suggestions = await service.suggest_goals(current_user.id, lookback_days)
+    return suggestions
 
 
 @router.post("/", response_model=GoalRead, status_code=status.HTTP_201_CREATED)
