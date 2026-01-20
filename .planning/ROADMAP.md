@@ -75,11 +75,12 @@ Plans:
 2. User sees which entry content contributed to which goal's score
 3. System surfaces patterns that suggest adding new goals ("You mention 'meditation' frequently - add as goal?")
 
-**Plans:** 2 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — ExtractionService with Claude + instructor for structured activity extraction
-- [ ] 03-02-PLAN.md — Goal mapping (EXTR-01) and goal suggestions (EXTR-02)
+- [x] 03-01-PLAN.md — ExtractionService with Claude + instructor for structured activity extraction
+- [x] 03-02-PLAN.md — Goal mapping (EXTR-01) and goal suggestions (EXTR-02)
+- [ ] 03-03-PLAN.md — Signal Extraction Integration (gap closure)
 
 ---
 
