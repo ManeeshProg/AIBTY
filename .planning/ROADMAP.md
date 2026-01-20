@@ -51,6 +51,13 @@ Plans:
 4. Deterministic rules provide base score; LLM adjusts within guardrails (+/-20%)
 5. Scoring is consistent (same input produces same output within 5% variance)
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Deterministic scoring engine with keyword/effort analysis
+- [ ] 02-02-PLAN.md — LLM score enhancement with Claude + instructor
+- [ ] 02-03-PLAN.md — ScoringService orchestration, API endpoints, streak tracking
+
 ---
 
 ### Phase 3: Signal Extraction
@@ -173,7 +180,7 @@ Plans:
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
 | 1 | Voice Transcription | VOICE-01, VOICE-02 | Complete |
-| 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Not Started |
+| 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Planned |
 | 3 | Signal Extraction | EXTR-01, EXTR-02 | Planned |
 | 4 | Historical Trends | HIST-01 | Planned |
 | 5 | Verdict Generation | VERD-01, VERD-02, VERD-03 | Not Started |
