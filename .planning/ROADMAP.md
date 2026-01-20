@@ -182,7 +182,7 @@ Plans:
 |-------|------|--------------|--------|
 | 1 | Voice Transcription | VOICE-01, VOICE-02 | Complete |
 | 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Complete |
-| 3 | Signal Extraction | EXTR-01, EXTR-02 | Planned |
+| 3 | Signal Extraction | EXTR-01, EXTR-02 | Complete |
 | 4 | Historical Trends | HIST-01 | Planned |
 | 5 | Verdict Generation | VERD-01, VERD-02, VERD-03 | Not Started |
 | 6 | Evening Orchestration | ORCH-01, ORCH-02 | Planned |

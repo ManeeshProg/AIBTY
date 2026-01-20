@@ -11,16 +11,16 @@
 ## Current Position
 
 **Milestone:** AI Evaluation Pipeline
-**Phase:** 3 of 7 (Signal Extraction)
-**Plan:** 3 of 3 pending (gap closure)
-**Status:** Gap closure plan created
-**Last Activity:** 2026-01-21 - Created 03-03-PLAN.md for integration
+**Phase:** 3 of 7 (Signal Extraction) - COMPLETE
+**Plan:** 3 of 3 complete
+**Status:** Phase 3 complete
+**Last Activity:** 2026-01-21 - Completed 03-03-PLAN.md (Signal Extraction Integration)
 
 **Progress:**
 ```
-Phases:    [##-----] 2/7 (Phase 3 in progress - gaps)
-Plans:     [######-----------] 6/18 total
-Tasks:     [----] 0/4 (plan 03-03)
+Phases:    [###----] 3/7 (Phase 3 complete)
+Plans:     [#######----------] 7/18 total
+Tasks:     [####] 4/4 (plan 03-03)
 ```
 
 ## Phase Overview
@@ -29,7 +29,7 @@ Tasks:     [----] 0/4 (plan 03-03)
 |-------|------|--------|
 | 1 | Voice Transcription | Complete |
 | 2 | Scoring Foundation | Complete |
-| 3 | Signal Extraction | Gap Closure |
+| 3 | Signal Extraction | Complete |
 | 4 | Historical Trends | Pending |
 | 5 | Verdict Generation | Pending |
 | 6 | Evening Orchestration | Pending |
@@ -39,8 +39,8 @@ Tasks:     [----] 0/4 (plan 03-03)
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 6 |
-| Tasks completed | 18 |
+| Plans completed | 7 |
+| Tasks completed | 22 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -64,8 +64,8 @@ Tasks:     [----] 0/4 (plan 03-03)
 | Claude Sonnet 4 for contextual analysis | Model specified in research as optimal for text analysis and emotional nuance | 2026-01-21 |
 | SAME_THRESHOLD = 5.0 | Within 5 points = "same" verdict; prevents false positives on minor fluctuations | 2026-01-21 |
 | Upsert strategy for DailyScore | Allows re-scoring same date (idempotent); deletes old metrics and creates fresh | 2026-01-21 |
-| Streak continues with threshold | Streak continues when score ≥ (previous - SAME_THRESHOLD); separate per goal | 2026-01-21 |
-| Composite score weighting | Weighted average: sum(score × weight) / sum(weights); honors UserGoal.weight | 2026-01-21 |
+| Streak continues with threshold | Streak continues when score >= (previous - SAME_THRESHOLD); separate per goal | 2026-01-21 |
+| Composite score weighting | Weighted average: sum(score * weight) / sum(weights); honors UserGoal.weight | 2026-01-21 |
 | Temperature 0.2 for extraction | Lower temperature for consistent structured extraction from journal text | 2026-01-21 |
 | Seven standard activity categories | productivity, fitness, learning, discipline, well-being, creativity, social - aligns with common goal types | 2026-01-21 |
 | Confidence scoring for extractions | 1.0 for explicit numbers, 0.7-0.9 for inferred values - enables quality filtering | 2026-01-21 |
@@ -73,11 +73,14 @@ Tasks:     [----] 0/4 (plan 03-03)
 | Fuzzy matching uses significant words | Words >3 chars from metric key checked against goal description - avoids false positives | 2026-01-21 |
 | Goal suggestions require frequency >= 3 | Balances between catching patterns and avoiding noise from one-off mentions | 2026-01-21 |
 | Category-specific description templates | Different goal types need different framing (track vs maintain vs build) | 2026-01-21 |
+| Extraction runs on all journal save operations | Ensures extracted metrics always reflect current journal content | 2026-01-21 |
+| Clear metrics before re-extraction | Idempotent extraction - editing journals doesn't create duplicates | 2026-01-21 |
+| PUT routes through create_or_update | Single code path ensures extraction consistency | 2026-01-21 |
 
 ### Open TODOs
 
 - Set OPENAI_API_KEY environment variable before using voice transcription
-- Set ANTHROPIC_API_KEY environment variable before using LLM score enhancement
+- Set ANTHROPIC_API_KEY environment variable before using LLM score enhancement and extraction
 
 ### Blockers
 
@@ -91,17 +94,17 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-21 - Created gap closure plan after verification found integration gaps
-**Stopped At:** Created 03-03-PLAN.md - Gap closure plan for wiring extraction pipeline
+**Last Session:** 2026-01-21 - Completed Signal Extraction Integration (03-03)
+**Stopped At:** Phase 3 complete - Ready for Phase 4 (Historical Trends)
 **Resume File:** None
 
-**Next Action:** Execute 03-03-PLAN.md to wire extraction into journal workflow
+**Next Action:** Begin Phase 4 (Historical Trends) planning/execution
 
 **Context to Preserve:**
 - **Phase 1 (Voice) complete:** POST /api/v1/voice/transcribe for voice journaling
 - **Phase 2 (Scoring) complete:** Full scoring pipeline operational
-- **Phase 3 (Extraction) complete:** ExtractionAgent + ExtractionService operational with goal mapping
-- **ScoringService orchestrates:** deterministic → LLM → comparison → streaks → persistence
+- **Phase 3 (Extraction) complete:** Full extraction pipeline operational and integrated
+- **ScoringService orchestrates:** deterministic -> LLM -> comparison -> streaks -> persistence
 - **Scoring endpoints:** POST /scores/score, GET /scores/today, GET /scores/{date}, GET /streaks/all, GET /history
 - **DeterministicScorer:** Keyword matching, effort detection, base scoring (0-100)
 - **LLMScoreEnhancer:** Contextual adjustment within +/-20% guardrails using Claude Sonnet 4
@@ -111,6 +114,8 @@ From research/SUMMARY.md:
 - **GoalActivityLink table:** Links ExtractedMetric to UserGoal with match_reason and contribution_score
 - **Goal mapping:** Category exact match (1.0) + keyword fuzzy match (0.7)
 - **Goal suggestions:** Pattern-based suggestions for unmatched recurring activities (frequency >= 3)
+- **GET /api/v1/goals/suggestions:** Exposes goal suggestions with configurable lookback (7-90 days)
+- **Journal save triggers extraction:** create_or_update() and append_content() both call extraction pipeline
 - **MockLLMScoreEnhancer:** Testing fallback when ANTHROPIC_API_KEY not set
 - **Verdict system:** better/same/worse/first_day with 5.0 point SAME_THRESHOLD
 - **Streak tracking:** current_streak and longest_streak per goal category

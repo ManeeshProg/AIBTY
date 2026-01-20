@@ -86,8 +86,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | VOICE-01 | Phase 1 | Complete |
 | VOICE-02 | Phase 1 | Complete |
-| EXTR-01 | Phase 3 | Pending |
-| EXTR-02 | Phase 3 | Pending |
+| EXTR-01 | Phase 3 | Complete |
+| EXTR-02 | Phase 3 | Complete |
 | SCORE-01 | Phase 2 | Complete |
 | SCORE-02 | Phase 2 | Complete |
 | SCORE-03 | Phase 2 | Complete |
@@ -108,4 +108,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-19*
-*Last updated: 2026-01-21 after Phase 2 completion*
+*Last updated: 2026-01-21 after Phase 3 completion*
