@@ -12,15 +12,15 @@
 
 **Milestone:** AI Evaluation Pipeline
 **Phase:** 2 of 7 (Scoring Foundation)
-**Plan:** 1 of 3 complete
+**Plan:** 2 of 3 complete
 **Status:** In progress
-**Last Activity:** 2026-01-21 - Completed 02-01-PLAN.md
+**Last Activity:** 2026-01-21 - Completed 02-02-PLAN.md
 
 **Progress:**
 ```
 Phases:    [##-----] 2/7 (Phase 1 complete, Phase 2 in progress)
-Plans:     [##--------------] 2/17 total
-Tasks:     [########] 3/3 (plan 02-01)
+Plans:     [###-------------] 3/17 total
+Tasks:     [########] 3/3 (plan 02-02)
 ```
 
 ## Phase Overview
@@ -39,8 +39,8 @@ Tasks:     [########] 3/3 (plan 02-01)
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 2 |
-| Tasks completed | 6 |
+| Plans completed | 3 |
+| Tasks completed | 9 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -58,10 +58,15 @@ Tasks:     [########] 3/3 (plan 02-01)
 | Keyword-based categories extensible | Pre-defined keywords for common goals, fallback to category name | 2026-01-21 |
 | Scoring formula: 30+20+30+10+10 | Base points (showed up) + keywords + effort + quantifiers + evidence = 100 max | 2026-01-21 |
 | Evidence limited to top 3 sentences | Keeps reasoning concise while preserving proof | 2026-01-21 |
+| Use instructor for structured LLM outputs | Provides automatic Pydantic parsing and retry logic, eliminating manual JSON parsing | 2026-01-21 |
+| Double-enforce +/-20% guardrails | Field validator + post-response clamping ensures adjustment limit never exceeded | 2026-01-21 |
+| Mock classes for testing | MockLLMScoreEnhancer mirrors real API, enables testing without API calls or costs | 2026-01-21 |
+| Claude Sonnet 4 for contextual analysis | Model specified in research as optimal for text analysis and emotional nuance | 2026-01-21 |
 
 ### Open TODOs
 
 - Set OPENAI_API_KEY environment variable before using voice transcription
+- Set ANTHROPIC_API_KEY environment variable before using LLM score enhancement
 
 ### Blockers
 
@@ -75,11 +80,11 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-21 - Completed Phase 2 Plan 1 (Deterministic Scoring Foundation)
-**Stopped At:** Completed 02-01-PLAN.md
+**Last Session:** 2026-01-21 - Completed Phase 2 Plan 2 (LLM Score Enhancement)
+**Stopped At:** Completed 02-02-PLAN.md
 **Resume File:** None
 
-**Next Action:** Continue Phase 2 with Plan 02 (LLM Enhancement) or Plan 03 (Integration)
+**Next Action:** Continue Phase 2 with Plan 03 (Integration) - wire deterministic + LLM enhancement together
 
 **Context to Preserve:**
 - Voice transcription endpoint complete: POST /api/v1/voice/transcribe
@@ -89,9 +94,13 @@ From research/SUMMARY.md:
 - **Scoring schemas:** GoalScoreInput, GoalScoreOutput, ScoringResult with Pydantic validation
 - **Deterministic scoring verified:** Same input produces identical output
 - **Evidence extraction:** Captures relevant journal sentences as proof
+- **LLMScoreEnhancer class complete:** enhance_score and enhance_scoring_result methods
+- **EnhancedScore model:** +/-20% guardrails enforced via validator + clamping
+- **MockLLMScoreEnhancer:** Testing without API calls
+- **Prompt templates:** SCORE_ENHANCEMENT_PROMPT with contextual guidance
+- **instructor integration:** Structured outputs from Claude using Pydantic
 - Existing codebase has FastAPI backend, auth, journals, goals, database models
 - Celery + Redis configured but not implemented
-- Research recommends instructor for structured outputs
 - pgvector 0.8+ already configured for embeddings
 
 ---
