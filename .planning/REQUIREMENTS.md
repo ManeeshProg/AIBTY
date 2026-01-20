@@ -19,10 +19,10 @@ Requirements for AI evaluation pipeline. Each maps to roadmap phases.
 
 ### Scoring
 
-- [ ] **SCORE-01**: System scores each goal dimension daily (did you show up, how much effort)
-- [ ] **SCORE-02**: System compares today's performance with yesterday
-- [ ] **SCORE-03**: System tracks consecutive improvement streaks
-- [ ] **SCORE-04**: Scoring uses deterministic rules + LLM reasoning hybrid
+- [x] **SCORE-01**: System scores each goal dimension daily (did you show up, how much effort)
+- [x] **SCORE-02**: System compares today's performance with yesterday
+- [x] **SCORE-03**: System tracks consecutive improvement streaks
+- [x] **SCORE-04**: Scoring uses deterministic rules + LLM reasoning hybrid
 
 ### Historical Context
 
@@ -88,10 +88,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VOICE-02 | Phase 1 | Complete |
 | EXTR-01 | Phase 3 | Pending |
 | EXTR-02 | Phase 3 | Pending |
-| SCORE-01 | Phase 2 | Pending |
-| SCORE-02 | Phase 2 | Pending |
-| SCORE-03 | Phase 2 | Pending |
-| SCORE-04 | Phase 2 | Pending |
+| SCORE-01 | Phase 2 | Complete |
+| SCORE-02 | Phase 2 | Complete |
+| SCORE-03 | Phase 2 | Complete |
+| SCORE-04 | Phase 2 | Complete |
 | HIST-01 | Phase 4 | Pending |
 | VERD-01 | Phase 5 | Pending |
 | VERD-02 | Phase 5 | Pending |
@@ -108,4 +108,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-19*
-*Last updated: 2026-01-19 after Phase 1 completion*
+*Last updated: 2026-01-21 after Phase 2 completion*

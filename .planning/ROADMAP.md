@@ -54,9 +54,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Deterministic scoring engine with keyword/effort analysis
-- [ ] 02-02-PLAN.md — LLM score enhancement with Claude + instructor
-- [ ] 02-03-PLAN.md — ScoringService orchestration, API endpoints, streak tracking
+- [x] 02-01-PLAN.md — Deterministic scoring engine with keyword/effort analysis
+- [x] 02-02-PLAN.md — LLM score enhancement with Claude + instructor
+- [x] 02-03-PLAN.md — ScoringService orchestration, API endpoints, streak tracking
 
 ---
 
@@ -180,7 +180,7 @@ Plans:
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
 | 1 | Voice Transcription | VOICE-01, VOICE-02 | Complete |
-| 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Planned |
+| 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Complete |
 | 3 | Signal Extraction | EXTR-01, EXTR-02 | Planned |
 | 4 | Historical Trends | HIST-01 | Planned |
 | 5 | Verdict Generation | VERD-01, VERD-02, VERD-03 | Not Started |
