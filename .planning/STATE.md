@@ -11,16 +11,16 @@
 ## Current Position
 
 **Milestone:** AI Evaluation Pipeline
-**Phase:** 2 of 7 (Scoring Foundation)
-**Plan:** 3 of 3 complete
+**Phase:** 3 of 7 (Signal Extraction)
+**Plan:** 1 of 1 complete
 **Status:** Phase complete
-**Last Activity:** 2026-01-21 - Completed 02-03-PLAN.md
+**Last Activity:** 2026-01-21 - Completed 03-01-PLAN.md
 
 **Progress:**
 ```
-Phases:    [##-----] 2/7 (Phase 2 complete)
-Plans:     [####------------] 4/17 total
-Tasks:     [###] 3/3 (plan 02-03)
+Phases:    [###----] 3/7 (Phase 3 complete)
+Plans:     [#####-----------] 5/17 total
+Tasks:     [###] 3/3 (plan 03-01)
 ```
 
 ## Phase Overview
@@ -29,7 +29,7 @@ Tasks:     [###] 3/3 (plan 02-03)
 |-------|------|--------|
 | 1 | Voice Transcription | Complete |
 | 2 | Scoring Foundation | Complete |
-| 3 | Signal Extraction | Pending |
+| 3 | Signal Extraction | Complete |
 | 4 | Historical Trends | Pending |
 | 5 | Verdict Generation | Pending |
 | 6 | Evening Orchestration | Pending |
@@ -39,8 +39,8 @@ Tasks:     [###] 3/3 (plan 02-03)
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 4 |
-| Tasks completed | 12 |
+| Plans completed | 5 |
+| Tasks completed | 15 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -66,6 +66,9 @@ Tasks:     [###] 3/3 (plan 02-03)
 | Upsert strategy for DailyScore | Allows re-scoring same date (idempotent); deletes old metrics and creates fresh | 2026-01-21 |
 | Streak continues with threshold | Streak continues when score ≥ (previous - SAME_THRESHOLD); separate per goal | 2026-01-21 |
 | Composite score weighting | Weighted average: sum(score × weight) / sum(weights); honors UserGoal.weight | 2026-01-21 |
+| Temperature 0.2 for extraction | Lower temperature for consistent structured extraction from journal text | 2026-01-21 |
+| Seven standard activity categories | productivity, fitness, learning, discipline, well-being, creativity, social - aligns with common goal types | 2026-01-21 |
+| Confidence scoring for extractions | 1.0 for explicit numbers, 0.7-0.9 for inferred values - enables quality filtering | 2026-01-21 |
 
 ### Open TODOs
 
@@ -84,23 +87,29 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-21 - Completed Phase 2 Plan 3 (Scoring Integration)
-**Stopped At:** Completed 02-03-PLAN.md - Phase 2 complete
+**Last Session:** 2026-01-21 - Completed Phase 3 Plan 1 (Signal Extraction)
+**Stopped At:** Completed 03-01-PLAN.md - Phase 3 complete
 **Resume File:** None
 
-**Next Action:** Begin Phase 3 (Signal Extraction) - extract quantifiable metrics from journal entries
+**Next Action:** Begin Phase 4 (Historical Trends) - RAG and trend analysis
 
 **Context to Preserve:**
 - **Phase 1 (Voice) complete:** POST /api/v1/voice/transcribe for voice journaling
 - **Phase 2 (Scoring) complete:** Full scoring pipeline operational
+- **Phase 3 (Extraction) complete:** ExtractionAgent + ExtractionService operational
 - **ScoringService orchestrates:** deterministic → LLM → comparison → streaks → persistence
 - **Scoring endpoints:** POST /scores/score, GET /scores/today, GET /scores/{date}, GET /streaks/all, GET /history
 - **DeterministicScorer:** Keyword matching, effort detection, base scoring (0-100)
 - **LLMScoreEnhancer:** Contextual adjustment within +/-20% guardrails using Claude Sonnet 4
+- **ExtractionAgent:** Claude Sonnet 4 + instructor for structured activity extraction
+- **ExtractionService:** extract_and_persist(), get_metrics_for_entry(), clear_metrics_for_entry()
+- **ExtractedMetric table:** Populated with category, key, value, evidence, confidence from journal entries
 - **MockLLMScoreEnhancer:** Testing fallback when ANTHROPIC_API_KEY not set
 - **Verdict system:** better/same/worse/first_day with 5.0 point SAME_THRESHOLD
 - **Streak tracking:** current_streak and longest_streak per goal category
 - **Persistence:** DailyScore and ScoreMetric tables with upsert support
+- **Seven activity categories:** productivity, fitness, learning, discipline, well-being, creativity, social
+- **instructor library:** ^1.14.0 for structured LLM outputs with Pydantic
 - Existing codebase has FastAPI backend, auth, journals, goals, database models
 - Celery + Redis configured but not implemented
 - pgvector 0.8+ already configured for embeddings
