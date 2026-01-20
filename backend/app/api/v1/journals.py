@@ -80,7 +80,12 @@ async def update_journal(
             detail="Journal entry not found",
         )
 
-    updated = await service.update(journal, journal_in.content_markdown)
+    # Use create_or_update to ensure extraction runs
+    updated = await service.create_or_update(
+        user_id=current_user.id,
+        entry_date=entry_date,
+        content_markdown=journal_in.content_markdown,
+    )
     return updated
 
 
