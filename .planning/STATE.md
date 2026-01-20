@@ -12,15 +12,15 @@
 
 **Milestone:** AI Evaluation Pipeline
 **Phase:** 3 of 7 (Signal Extraction)
-**Plan:** 1 of 1 complete
+**Plan:** 2 of 2 complete
 **Status:** Phase complete
-**Last Activity:** 2026-01-21 - Completed 03-01-PLAN.md
+**Last Activity:** 2026-01-21 - Completed 03-02-PLAN.md
 
 **Progress:**
 ```
 Phases:    [###----] 3/7 (Phase 3 complete)
-Plans:     [#####-----------] 5/17 total
-Tasks:     [###] 3/3 (plan 03-01)
+Plans:     [######----------] 6/17 total
+Tasks:     [###] 3/3 (plan 03-02)
 ```
 
 ## Phase Overview
@@ -39,8 +39,8 @@ Tasks:     [###] 3/3 (plan 03-01)
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 5 |
-| Tasks completed | 15 |
+| Plans completed | 6 |
+| Tasks completed | 18 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -69,6 +69,10 @@ Tasks:     [###] 3/3 (plan 03-01)
 | Temperature 0.2 for extraction | Lower temperature for consistent structured extraction from journal text | 2026-01-21 |
 | Seven standard activity categories | productivity, fitness, learning, discipline, well-being, creativity, social - aligns with common goal types | 2026-01-21 |
 | Confidence scoring for extractions | 1.0 for explicit numbers, 0.7-0.9 for inferred values - enables quality filtering | 2026-01-21 |
+| Category exact match scores 1.0, fuzzy 0.7 | Primary matching on category exact match, secondary on keyword fuzzy match for goal mapping | 2026-01-21 |
+| Fuzzy matching uses significant words | Words >3 chars from metric key checked against goal description - avoids false positives | 2026-01-21 |
+| Goal suggestions require frequency >= 3 | Balances between catching patterns and avoiding noise from one-off mentions | 2026-01-21 |
+| Category-specific description templates | Different goal types need different framing (track vs maintain vs build) | 2026-01-21 |
 
 ### Open TODOs
 
@@ -87,8 +91,8 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-21 - Completed Phase 3 Plan 1 (Signal Extraction)
-**Stopped At:** Completed 03-01-PLAN.md - Phase 3 complete
+**Last Session:** 2026-01-21 - Completed Phase 3 Plan 2 (Goal Mapping & Suggestions)
+**Stopped At:** Completed 03-02-PLAN.md - Phase 3 complete
 **Resume File:** None
 
 **Next Action:** Begin Phase 4 (Historical Trends) - RAG and trend analysis
@@ -96,14 +100,17 @@ From research/SUMMARY.md:
 **Context to Preserve:**
 - **Phase 1 (Voice) complete:** POST /api/v1/voice/transcribe for voice journaling
 - **Phase 2 (Scoring) complete:** Full scoring pipeline operational
-- **Phase 3 (Extraction) complete:** ExtractionAgent + ExtractionService operational
+- **Phase 3 (Extraction) complete:** ExtractionAgent + ExtractionService operational with goal mapping
 - **ScoringService orchestrates:** deterministic → LLM → comparison → streaks → persistence
 - **Scoring endpoints:** POST /scores/score, GET /scores/today, GET /scores/{date}, GET /streaks/all, GET /history
 - **DeterministicScorer:** Keyword matching, effort detection, base scoring (0-100)
 - **LLMScoreEnhancer:** Contextual adjustment within +/-20% guardrails using Claude Sonnet 4
 - **ExtractionAgent:** Claude Sonnet 4 + instructor for structured activity extraction
-- **ExtractionService:** extract_and_persist(), get_metrics_for_entry(), clear_metrics_for_entry()
+- **ExtractionService:** extract_and_persist(), get_metrics_for_entry(), clear_metrics_for_entry(), map_metrics_to_goals(), suggest_goals()
 - **ExtractedMetric table:** Populated with category, key, value, evidence, confidence from journal entries
+- **GoalActivityLink table:** Links ExtractedMetric to UserGoal with match_reason and contribution_score
+- **Goal mapping:** Category exact match (1.0) + keyword fuzzy match (0.7)
+- **Goal suggestions:** Pattern-based suggestions for unmatched recurring activities (frequency >= 3)
 - **MockLLMScoreEnhancer:** Testing fallback when ANTHROPIC_API_KEY not set
 - **Verdict system:** better/same/worse/first_day with 5.0 point SAME_THRESHOLD
 - **Streak tracking:** current_streak and longest_streak per goal category
