@@ -26,3 +26,17 @@ class GoalRead(GoalBase):
     is_active: bool
 
     model_config = {"from_attributes": True}
+
+
+class GoalSuggestionRead(BaseModel):
+    """
+    API response schema for goal suggestions.
+
+    Surfaced when system detects recurring patterns in journal entries
+    that don't match existing goals.
+    """
+    category: str
+    suggested_description: str
+    based_on_pattern: str
+    frequency: int
+    confidence: float

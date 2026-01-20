@@ -1,9 +1,11 @@
 from uuid import UUID
-from sqlalchemy import select, delete
+from datetime import datetime, timedelta
+from sqlalchemy import select, delete, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.journal_entry import JournalEntry, ExtractedMetric
 from app.models.goal import UserGoal, GoalActivityLink
 from app.ai_pipeline.agents.extraction_agent import ExtractionAgent
+from app.ai_pipeline.schemas.extraction import GoalSuggestion
 
 
 class ExtractionService:
@@ -182,3 +184,99 @@ class ExtractionService:
 
         # Check if any significant word appears in goal description
         return any(word in goal_lower for word in key_words)
+
+    async def suggest_goals(self, user_id: UUID, lookback_days: int = 30) -> list[GoalSuggestion]:
+        """
+        Suggest new goals based on recurring patterns in journal entries.
+
+        Analyzes extracted metrics over the lookback period to find patterns
+        that don't match existing active goals, then surfaces suggestions.
+
+        Args:
+            user_id: UUID of the user
+            lookback_days: Number of days to look back (default: 30)
+
+        Returns:
+            List of GoalSuggestion objects for unmatched patterns
+        """
+        # Calculate date threshold
+        cutoff_date = datetime.now().date() - timedelta(days=lookback_days)
+
+        # Fetch user's active goals
+        goals_result = await self.db.execute(
+            select(UserGoal).where(
+                UserGoal.user_id == user_id,
+                UserGoal.is_active == True
+            )
+        )
+        active_goals = list(goals_result.scalars().all())
+        active_categories = {goal.category.lower() for goal in active_goals}
+
+        # Query extracted metrics with aggregation by category and key
+        # Group by (category, key) and count frequency
+        metrics_result = await self.db.execute(
+            select(
+                ExtractedMetric.category,
+                ExtractedMetric.key,
+                func.count(ExtractedMetric.id).label('frequency'),
+                func.avg(ExtractedMetric.confidence).label('avg_confidence')
+            )
+            .join(JournalEntry, ExtractedMetric.entry_id == JournalEntry.id)
+            .where(
+                JournalEntry.user_id == user_id,
+                JournalEntry.entry_date >= cutoff_date
+            )
+            .group_by(ExtractedMetric.category, ExtractedMetric.key)
+            .having(func.count(ExtractedMetric.id) >= 3)  # At least 3 occurrences
+        )
+
+        # Build suggestions for unmatched patterns
+        suggestions = []
+        for row in metrics_result:
+            category = row.category
+            key = row.key
+            frequency = row.frequency
+            avg_confidence = row.avg_confidence
+
+            # Skip if category already covered by active goal
+            if category.lower() in active_categories:
+                continue
+
+            # Generate suggestion
+            suggestion = GoalSuggestion(
+                category=category,
+                suggested_description=self._generate_description(category, key),
+                based_on_pattern=f"{key.replace('_', ' ')} mentioned {frequency} times in last {lookback_days} days",
+                frequency=frequency,
+                confidence=min(0.9, avg_confidence * (frequency / 10))  # Scale by frequency
+            )
+            suggestions.append(suggestion)
+
+        return suggestions
+
+    def _generate_description(self, category: str, key: str) -> str:
+        """
+        Generate a human-readable goal description from category and key.
+
+        Args:
+            category: Activity category
+            key: Metric key (e.g., "workout_duration")
+
+        Returns:
+            Suggested goal description
+        """
+        # Clean up the key for readability
+        readable_key = key.replace('_', ' ').title()
+
+        # Category-specific templates
+        templates = {
+            'productivity': f"Track and improve {readable_key}",
+            'fitness': f"Maintain consistent {readable_key}",
+            'learning': f"Dedicate time to {readable_key}",
+            'discipline': f"Build habit around {readable_key}",
+            'well-being': f"Monitor and optimize {readable_key}",
+            'creativity': f"Engage regularly in {readable_key}",
+            'social': f"Prioritize {readable_key}",
+        }
+
+        return templates.get(category.lower(), f"Track {readable_key}")

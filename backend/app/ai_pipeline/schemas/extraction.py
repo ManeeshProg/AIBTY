@@ -45,3 +45,29 @@ class ExtractionResult(BaseModel):
     raw_text: str = Field(
         description="Original journal text (for debugging and validation)"
     )
+
+
+class GoalSuggestion(BaseModel):
+    """
+    Suggested goal based on recurring patterns in journal entries.
+
+    Surfaced when user consistently logs activities without a matching goal,
+    enabling the system to proactively suggest areas for focus.
+    """
+    category: str = Field(
+        description="Suggested goal category (productivity, fitness, learning, etc.)"
+    )
+    suggested_description: str = Field(
+        description="Recommended goal description based on pattern"
+    )
+    based_on_pattern: str = Field(
+        description="Evidence from entries that motivated this suggestion"
+    )
+    frequency: int = Field(
+        description="How many times this pattern appeared in the lookback period"
+    )
+    confidence: float = Field(
+        ge=0.0,
+        le=1.0,
+        description="Confidence that this is a meaningful goal suggestion"
+    )
