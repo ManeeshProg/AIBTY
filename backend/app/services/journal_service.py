@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from app.models.journal_entry import JournalEntry
+from app.services.extraction_service import ExtractionService
 
 
 class JournalService:
@@ -84,8 +85,18 @@ class JournalService:
             existing.content_markdown = f"{existing.content_markdown}\n\n{new_content}"
             await self.db.commit()
             await self.db.refresh(existing)
-            return existing
-        return await self.create(user_id, entry_date, new_content, input_source=input_source)
+            journal = existing
+        else:
+            journal = await self.create(user_id, entry_date, new_content, input_source=input_source)
+
+        # Re-run extraction on full content
+        extraction_service = ExtractionService(self.db)
+        await extraction_service.clear_metrics_for_entry(journal.id)
+        await extraction_service.extract_and_persist(journal)
+
+        # Refresh to load new metrics relationship
+        await self.db.refresh(journal, ["metrics"])
+        return journal
 
     async def create_or_update(
         self,
@@ -98,8 +109,18 @@ class JournalService:
             existing.content_markdown = content_markdown
             await self.db.commit()
             await self.db.refresh(existing)
-            return existing
-        return await self.create(user_id, entry_date, content_markdown)
+            journal = existing
+        else:
+            journal = await self.create(user_id, entry_date, content_markdown)
+
+        # Trigger extraction pipeline
+        extraction_service = ExtractionService(self.db)
+        await extraction_service.clear_metrics_for_entry(journal.id)
+        await extraction_service.extract_and_persist(journal)
+
+        # Refresh to load new metrics relationship
+        await self.db.refresh(journal, ["metrics"])
+        return journal
 
     async def update(self, journal: JournalEntry, content_markdown: str) -> JournalEntry:
         journal.content_markdown = content_markdown
