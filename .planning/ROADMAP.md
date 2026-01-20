@@ -68,6 +68,12 @@ Plans:
 2. User sees which entry content contributed to which goal's score
 3. System surfaces patterns that suggest adding new goals ("You mention 'meditation' frequently - add as goal?")
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — ExtractionService with Claude + instructor for structured activity extraction
+- [ ] 03-02-PLAN.md — Goal mapping (EXTR-01) and goal suggestions (EXTR-02)
+
 ---
 
 ### Phase 4: Historical Trends
@@ -127,6 +133,13 @@ Plans:
 3. All entries from the day are aggregated into single analysis
 4. Failed analyses retry with exponential backoff
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — User analysis_time preference field and API endpoint
+- [ ] 06-02-PLAN.md — Celery app configuration with Redis broker and beat scheduler
+- [ ] 06-03-PLAN.md — Orchestrator task with entry aggregation and retry logic
+
 ---
 
 ### Phase 7: Smart Notifications
@@ -145,6 +158,14 @@ Plans:
 3. Messages use the "supportive but with edge" tone
 4. Users can disable notifications without affecting core functionality
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Notification model, user preferences schema, database migration
+- [ ] 07-02-PLAN.md — NotificationService with non-logger detection and message generation
+- [ ] 07-03-PLAN.md — Notification API endpoints for mobile consumption
+- [ ] 07-04-PLAN.md — Celery task for scheduled notification checks
+
 ---
 
 ## Progress
@@ -153,11 +174,11 @@ Plans:
 |-------|------|--------------|--------|
 | 1 | Voice Transcription | VOICE-01, VOICE-02 | Complete |
 | 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Not Started |
-| 3 | Signal Extraction | EXTR-01, EXTR-02 | Not Started |
+| 3 | Signal Extraction | EXTR-01, EXTR-02 | Planned |
 | 4 | Historical Trends | HIST-01 | Planned |
 | 5 | Verdict Generation | VERD-01, VERD-02, VERD-03 | Not Started |
-| 6 | Evening Orchestration | ORCH-01, ORCH-02 | Not Started |
-| 7 | Smart Notifications | NOTIF-01, NOTIF-02 | Not Started |
+| 6 | Evening Orchestration | ORCH-01, ORCH-02 | Planned |
+| 7 | Smart Notifications | NOTIF-01, NOTIF-02 | Planned |
 
 ## Coverage
 
