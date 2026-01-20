@@ -17,6 +17,7 @@ langchain-community==0.0.38
 langchain-core==0.1.52
 openai==1.30.5
 anthropic==0.28.1
+instructor==1.4.3
 tiktoken==0.7.0
 celery==5.4.0
 redis==5.0.7
