@@ -12,15 +12,15 @@
 
 **Milestone:** AI Evaluation Pipeline
 **Phase:** 2 of 7 (Scoring Foundation)
-**Plan:** 2 of 3 complete
-**Status:** In progress
-**Last Activity:** 2026-01-21 - Completed 02-02-PLAN.md
+**Plan:** 3 of 3 complete
+**Status:** Phase complete
+**Last Activity:** 2026-01-21 - Completed 02-03-PLAN.md
 
 **Progress:**
 ```
-Phases:    [##-----] 2/7 (Phase 1 complete, Phase 2 in progress)
-Plans:     [###-------------] 3/17 total
-Tasks:     [########] 3/3 (plan 02-02)
+Phases:    [##-----] 2/7 (Phase 2 complete)
+Plans:     [####------------] 4/17 total
+Tasks:     [###] 3/3 (plan 02-03)
 ```
 
 ## Phase Overview
@@ -28,7 +28,7 @@ Tasks:     [########] 3/3 (plan 02-02)
 | Phase | Name | Status |
 |-------|------|--------|
 | 1 | Voice Transcription | Complete |
-| 2 | Scoring Foundation | In Progress (1/3 plans) |
+| 2 | Scoring Foundation | Complete |
 | 3 | Signal Extraction | Pending |
 | 4 | Historical Trends | Pending |
 | 5 | Verdict Generation | Pending |
@@ -39,8 +39,8 @@ Tasks:     [########] 3/3 (plan 02-02)
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 3 |
-| Tasks completed | 9 |
+| Plans completed | 4 |
+| Tasks completed | 12 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -62,6 +62,10 @@ Tasks:     [########] 3/3 (plan 02-02)
 | Double-enforce +/-20% guardrails | Field validator + post-response clamping ensures adjustment limit never exceeded | 2026-01-21 |
 | Mock classes for testing | MockLLMScoreEnhancer mirrors real API, enables testing without API calls or costs | 2026-01-21 |
 | Claude Sonnet 4 for contextual analysis | Model specified in research as optimal for text analysis and emotional nuance | 2026-01-21 |
+| SAME_THRESHOLD = 5.0 | Within 5 points = "same" verdict; prevents false positives on minor fluctuations | 2026-01-21 |
+| Upsert strategy for DailyScore | Allows re-scoring same date (idempotent); deletes old metrics and creates fresh | 2026-01-21 |
+| Streak continues with threshold | Streak continues when score ≥ (previous - SAME_THRESHOLD); separate per goal | 2026-01-21 |
+| Composite score weighting | Weighted average: sum(score × weight) / sum(weights); honors UserGoal.weight | 2026-01-21 |
 
 ### Open TODOs
 
@@ -80,25 +84,23 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-21 - Completed Phase 2 Plan 2 (LLM Score Enhancement)
-**Stopped At:** Completed 02-02-PLAN.md
+**Last Session:** 2026-01-21 - Completed Phase 2 Plan 3 (Scoring Integration)
+**Stopped At:** Completed 02-03-PLAN.md - Phase 2 complete
 **Resume File:** None
 
-**Next Action:** Continue Phase 2 with Plan 03 (Integration) - wire deterministic + LLM enhancement together
+**Next Action:** Begin Phase 3 (Signal Extraction) - extract quantifiable metrics from journal entries
 
 **Context to Preserve:**
-- Voice transcription endpoint complete: POST /api/v1/voice/transcribe
-- JournalService has append_content method for voice accumulation
-- TranscriptionService uses OpenAI Whisper API (requires OPENAI_API_KEY)
-- **DeterministicScorer class complete:** score_goal and score_entry methods
-- **Scoring schemas:** GoalScoreInput, GoalScoreOutput, ScoringResult with Pydantic validation
-- **Deterministic scoring verified:** Same input produces identical output
-- **Evidence extraction:** Captures relevant journal sentences as proof
-- **LLMScoreEnhancer class complete:** enhance_score and enhance_scoring_result methods
-- **EnhancedScore model:** +/-20% guardrails enforced via validator + clamping
-- **MockLLMScoreEnhancer:** Testing without API calls
-- **Prompt templates:** SCORE_ENHANCEMENT_PROMPT with contextual guidance
-- **instructor integration:** Structured outputs from Claude using Pydantic
+- **Phase 1 (Voice) complete:** POST /api/v1/voice/transcribe for voice journaling
+- **Phase 2 (Scoring) complete:** Full scoring pipeline operational
+- **ScoringService orchestrates:** deterministic → LLM → comparison → streaks → persistence
+- **Scoring endpoints:** POST /scores/score, GET /scores/today, GET /scores/{date}, GET /streaks/all, GET /history
+- **DeterministicScorer:** Keyword matching, effort detection, base scoring (0-100)
+- **LLMScoreEnhancer:** Contextual adjustment within +/-20% guardrails using Claude Sonnet 4
+- **MockLLMScoreEnhancer:** Testing fallback when ANTHROPIC_API_KEY not set
+- **Verdict system:** better/same/worse/first_day with 5.0 point SAME_THRESHOLD
+- **Streak tracking:** current_streak and longest_streak per goal category
+- **Persistence:** DailyScore and ScoreMetric tables with upsert support
 - Existing codebase has FastAPI backend, auth, journals, goals, database models
 - Celery + Redis configured but not implemented
 - pgvector 0.8+ already configured for embeddings
