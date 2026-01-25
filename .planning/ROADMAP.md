@@ -80,7 +80,7 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — ExtractionService with Claude + instructor for structured activity extraction
 - [x] 03-02-PLAN.md — Goal mapping (EXTR-01) and goal suggestions (EXTR-02)
-- [ ] 03-03-PLAN.md — Signal Extraction Integration (gap closure)
+- [x] 03-03-PLAN.md — Signal Extraction Integration (gap closure)
 
 ---
 
@@ -101,7 +101,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 04-01-PLAN.md — TrendService, schemas, and API endpoint for goal trends
+- [x] 04-01-PLAN.md — TrendService, schemas, and API endpoint for goal trends
 
 ---
 
@@ -183,7 +183,7 @@ Plans:
 | 1 | Voice Transcription | VOICE-01, VOICE-02 | Complete |
 | 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Complete |
 | 3 | Signal Extraction | EXTR-01, EXTR-02 | Complete |
-| 4 | Historical Trends | HIST-01 | Planned |
+| 4 | Historical Trends | HIST-01 | Complete |
 | 5 | Verdict Generation | VERD-01, VERD-02, VERD-03 | Not Started |
 | 6 | Evening Orchestration | ORCH-01, ORCH-02 | Planned |
 | 7 | Smart Notifications | NOTIF-01, NOTIF-02 | Planned |
