@@ -1,6 +1,6 @@
 # Project State: Am I Better Than Yesterday?
 
-**Last Updated:** 2026-01-25T13:22:00Z
+**Last Updated:** 2026-01-25T18:50:00Z
 
 ## Project Reference
 
@@ -86,6 +86,7 @@ Tasks:     [########] 8/8 (phase 6)
 | min_length=1 for tomorrow_actions | Ensures actionable guidance is always provided | 2026-01-25 |
 | Three tone tiers for verdicts | supportive_only/light_edge/full_edge maps to mood classification | 2026-01-25 |
 | Mock fallback without API key | Development without API costs using MockMoodClassifier/MockVerdictGenerator | 2026-01-25 |
+| Default analysis_time 21:00 UTC | Evening time when daily activities complete; explicit timezone config required | 2026-01-25 |
 | celeryconfig.py in backend root | Celery config_from_object loads from Python path; backend root is on path | 2026-01-25 |
 | Unique constraint user_date | One analysis per user per day for idempotency | 2026-01-25 |
 | Retry strategy exponential backoff | Max 3 retries with 1 hour max delay and jitter | 2026-01-25 |
@@ -144,6 +145,7 @@ From research/SUMMARY.md:
 - **VerdictGenerator:** Creates emotional verdicts with activity-specific messaging and tomorrow actions
 - **VerdictService:** Orchestrates mood classification + verdict generation
 - **Verdicts endpoints:** POST /verdicts/generate, GET /verdicts/today
+- **User preferences endpoints:** GET/PATCH /api/v1/users/me/preferences (analysis_time, timezone)
 - **Three tone tiers:** supportive_only (struggling), light_edge (stable), full_edge (thriving)
 - **Streak tracking:** current_streak and longest_streak per goal category
 - **Persistence:** DailyScore and ScoreMetric tables with upsert support
