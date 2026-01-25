@@ -18,12 +18,17 @@ task_soft_time_limit = 240  # 4 minute soft limit (raises exception)
 task_default_retry_delay = 60  # 1 minute initial retry
 task_max_retries = 3
 
-# Beat schedule - runs every minute to check for due analyses
+# Beat schedule - periodic tasks
 beat_schedule = {
     "check-due-analyses": {
         "task": "app.tasks.orchestrator.check_due_analyses",
         "schedule": crontab(minute="*"),  # Every minute
         "options": {"queue": "default"},
+    },
+    "check-non-loggers-hourly": {
+        "task": "app.tasks.notification_tasks.check_and_notify_non_loggers",
+        "schedule": crontab(minute=0),  # Run at the top of every hour
+        "options": {"queue": "notifications"},
     },
 }
 
@@ -31,6 +36,7 @@ beat_schedule = {
 task_routes = {
     "app.tasks.orchestrator.*": {"queue": "default"},
     "app.tasks.analysis.*": {"queue": "analysis"},
+    "app.tasks.notification_tasks.*": {"queue": "notifications"},
 }
 
 # Result backend settings
