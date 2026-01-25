@@ -123,6 +123,13 @@ Plans:
 4. Each verdict includes at least one concrete action for tomorrow
 5. Mood classification prevents inappropriate criticism during detected low states
 
+**Plans:** 3 plans
+
+Plans:
+- [x] 05-01-PLAN.md — MoodClassifier agent for safety-first tone selection
+- [x] 05-02-PLAN.md — VerdictGenerator and VerdictService with tiered messaging
+- [x] 05-03-PLAN.md — Verdicts API endpoint (/verdicts/generate, /verdicts/today)
+
 ---
 
 ### Phase 6: Evening Orchestration
@@ -184,7 +191,7 @@ Plans:
 | 2 | Scoring Foundation | SCORE-01, SCORE-02, SCORE-03, SCORE-04 | Complete |
 | 3 | Signal Extraction | EXTR-01, EXTR-02 | Complete |
 | 4 | Historical Trends | HIST-01 | Complete |
-| 5 | Verdict Generation | VERD-01, VERD-02, VERD-03 | Not Started |
+| 5 | Verdict Generation | VERD-01, VERD-02, VERD-03 | Complete |
 | 6 | Evening Orchestration | ORCH-01, ORCH-02 | Planned |
 | 7 | Smart Notifications | NOTIF-01, NOTIF-02 | Planned |
 
