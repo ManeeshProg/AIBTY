@@ -1,6 +1,6 @@
 # Project State: Am I Better Than Yesterday?
 
-**Last Updated:** 2026-01-25T14:00:00Z
+**Last Updated:** 2026-01-25T13:45:00Z
 
 ## Project Reference
 
@@ -12,15 +12,15 @@
 
 **Milestone:** AI Evaluation Pipeline
 **Phase:** 7 of 7 (Smart Notifications) - In Progress
-**Plan:** 2 of 4 complete
+**Plan:** 3 of 4 complete
 **Status:** In progress
-**Last Activity:** 2026-01-25 - Completed 07-03-PLAN.md (Notification API Endpoints)
+**Last Activity:** 2026-01-25 - Completed 07-02-PLAN.md (NotificationService)
 
 **Progress:**
 ```
 Phases:    [######.] 7/7 (Phase 7 in progress)
-Plans:     [################-] 16/18 total
-Tasks:     [#####---] 5/8 (phase 7)
+Plans:     [################-] 17/18 total
+Tasks:     [######--] 7/8 (phase 7)
 ```
 
 ## Phase Overview
@@ -39,8 +39,8 @@ Tasks:     [#####---] 5/8 (phase 7)
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 16 |
-| Tasks completed | 47 |
+| Plans completed | 17 |
+| Tasks completed | 49 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -94,6 +94,10 @@ Tasks:     [#####---] 5/8 (phase 7)
 | Failed analysis retry allowed | Failed analyses can be retried; completed ones are skipped | 2026-01-25 |
 | Ownership verification on notifications | Check user_id match before modifying notifications for security | 2026-01-25 |
 | Mobile polling for notifications | GET /notifications returns pending only; mobile polls then delivers locally | 2026-01-25 |
+| Python filtering over SQL for JSON preferences | Simpler query that works across SQLite/PostgreSQL for non-logger detection | 2026-01-25 |
+| Default notification time 18:00 | Evening default when users likely done with daily activities | 2026-01-25 |
+| Ego-poking tone tiers | Messages escalate based on inactivity: 1 day, 2-3 days, 4-7 days, 7+ days | 2026-01-25 |
+| Activity summary lookback 7 days | Balance between recent context and meaningful patterns | 2026-01-25 |
 
 ### Open TODOs
 
@@ -113,8 +117,8 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-25 - Completed Notification API Endpoints (07-03)
-**Stopped At:** Plan 07-03 complete - Ready for 07-04 (Notification Scheduling)
+**Last Session:** 2026-01-25 - Completed NotificationService (07-02)
+**Stopped At:** Plan 07-02 complete - Ready for 07-04 (Notification Scheduling)
 **Resume File:** None
 
 **Next Action:** Execute Phase 7 Plan 04 (Notification Scheduling)
@@ -166,8 +170,8 @@ From research/SUMMARY.md:
 - **Notification types:** reminder, verdict, system
 - **NotificationRead, NotificationPreferencesUpdate schemas:** Ready for API
 - **Notification API endpoints:** GET /notifications, GET/PATCH /notifications/preferences, PATCH /{id}/delivered, PATCH /{id}/read, PATCH /{id}/dismiss
-- **NotificationService:** get_pending_notifications(), mark_delivered(), mark_read(), dismiss_notification()
+- **NotificationService (full):** get_non_loggers(), get_user_activity_summary(), generate_reminder_message(), create_notification(), get_pending_notifications(), mark_delivered(), mark_read(), dismiss_notification()
 
 ---
 
-*State updated: 2026-01-25*
+*State updated: 2026-01-25T13:45:00Z*
