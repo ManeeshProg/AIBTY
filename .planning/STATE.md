@@ -11,16 +11,16 @@
 ## Current Position
 
 **Milestone:** AI Evaluation Pipeline
-**Phase:** 4 of 7 (Historical Trends) - COMPLETE
-**Plan:** 1 of 1 complete
-**Status:** Phase 4 complete
-**Last Activity:** 2026-01-25 - Completed 04-01-PLAN.md (Historical Trends)
+**Phase:** 5 of 7 (Verdict Generation) - COMPLETE
+**Plan:** 3 of 3 complete
+**Status:** Phase 5 complete
+**Last Activity:** 2026-01-25 - Completed 05-03-PLAN.md (Verdicts API)
 
 **Progress:**
 ```
-Phases:    [####---] 4/7 (Phase 4 complete)
-Plans:     [########---------] 8/18 total
-Tasks:     [###] 3/3 (plan 04-01)
+Phases:    [#####--] 5/7 (Phase 5 complete)
+Plans:     [###########------] 11/18 total
+Tasks:     [########] 8/8 (phase 5)
 ```
 
 ## Phase Overview
@@ -31,7 +31,7 @@ Tasks:     [###] 3/3 (plan 04-01)
 | 2 | Scoring Foundation | Complete |
 | 3 | Signal Extraction | Complete |
 | 4 | Historical Trends | Complete |
-| 5 | Verdict Generation | Pending |
+| 5 | Verdict Generation | Complete |
 | 6 | Evening Orchestration | Pending |
 | 7 | Smart Notifications | Pending |
 
@@ -39,8 +39,8 @@ Tasks:     [###] 3/3 (plan 04-01)
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 8 |
-| Tasks completed | 25 |
+| Plans completed | 11 |
+| Tasks completed | 33 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -80,6 +80,12 @@ Tasks:     [###] 3/3 (plan 04-01)
 | Pre-computed trend direction | Mobile doesn't calculate; API returns "improving"/"declining"/"stable"/"insufficient_data" | 2026-01-25 |
 | 5% threshold for trend changes | Matches SAME_THRESHOLD logic; prevents noise in week-over-week comparisons | 2026-01-25 |
 | Week = 7 days, not calendar week | Consistent window regardless of query day | 2026-01-25 |
+| Three-tier mood classification | struggling/stable/thriving - simple classification reduces error risk | 2026-01-25 |
+| Crisis flag always supportive_only | Never deliver edge messaging to someone in crisis | 2026-01-25 |
+| min_length=1 for activity_references | Prevents generic "Great job!" messages | 2026-01-25 |
+| min_length=1 for tomorrow_actions | Ensures actionable guidance is always provided | 2026-01-25 |
+| Three tone tiers for verdicts | supportive_only/light_edge/full_edge maps to mood classification | 2026-01-25 |
+| Mock fallback without API key | Development without API costs using MockMoodClassifier/MockVerdictGenerator | 2026-01-25 |
 
 ### Open TODOs
 
@@ -98,17 +104,18 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-25 - Completed Historical Trends (04-01)
-**Stopped At:** Phase 4 complete - Ready for Phase 5 (Verdict Generation)
+**Last Session:** 2026-01-25 - Completed Verdict Generation (05-01, 05-02, 05-03)
+**Stopped At:** Phase 5 complete - Ready for Phase 6 (Evening Orchestration)
 **Resume File:** None
 
-**Next Action:** Begin Phase 5 (Verdict Generation) planning/execution
+**Next Action:** Begin Phase 6 (Evening Orchestration) planning/execution
 
 **Context to Preserve:**
 - **Phase 1 (Voice) complete:** POST /api/v1/voice/transcribe for voice journaling
 - **Phase 2 (Scoring) complete:** Full scoring pipeline operational
 - **Phase 3 (Extraction) complete:** Full extraction pipeline operational and integrated
 - **Phase 4 (Trends) complete:** Historical trend analysis operational
+- **Phase 5 (Verdicts) complete:** Mood-aware verdict generation operational
 - **ScoringService orchestrates:** deterministic -> LLM -> comparison -> streaks -> persistence
 - **Scoring endpoints:** POST /scores/score, GET /scores/today, GET /scores/{date}, GET /streaks/all, GET /history
 - **Trends endpoints:** GET /trends/, GET /trends/{goal_category}
@@ -126,6 +133,11 @@ From research/SUMMARY.md:
 - **Journal save triggers extraction:** create_or_update() and append_content() both call extraction pipeline
 - **MockLLMScoreEnhancer:** Testing fallback when ANTHROPIC_API_KEY not set
 - **Verdict system:** better/same/worse/first_day with 5.0 point SAME_THRESHOLD
+- **MoodClassifier:** Classifies journal content as struggling/stable/thriving with crisis detection
+- **VerdictGenerator:** Creates emotional verdicts with activity-specific messaging and tomorrow actions
+- **VerdictService:** Orchestrates mood classification + verdict generation
+- **Verdicts endpoints:** POST /verdicts/generate, GET /verdicts/today
+- **Three tone tiers:** supportive_only (struggling), light_edge (stable), full_edge (thriving)
 - **Streak tracking:** current_streak and longest_streak per goal category
 - **Persistence:** DailyScore and ScoreMetric tables with upsert support
 - **Seven activity categories:** productivity, fitness, learning, discipline, well-being, creativity, social
