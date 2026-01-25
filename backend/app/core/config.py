@@ -18,6 +18,18 @@ class Settings(BaseSettings):
     # Anthropic (for scoring enhancement)
     ANTHROPIC_API_KEY: str | None = None
 
+    # Redis / Celery
+    REDIS_URL: str = "redis://localhost:6379/0"
+    CELERY_RESULT_BACKEND: str | None = None  # Optional, can use Redis
+
+    @property
+    def celery_broker_url(self) -> str:
+        return self.REDIS_URL
+
+    @property
+    def celery_result_backend_url(self) -> str:
+        return self.CELERY_RESULT_BACKEND or self.REDIS_URL
+
     # CORS
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
