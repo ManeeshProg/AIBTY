@@ -1,6 +1,6 @@
 # Project State: Am I Better Than Yesterday?
 
-**Last Updated:** 2026-01-25T13:18:25Z
+**Last Updated:** 2026-01-25T13:22:00Z
 
 ## Project Reference
 
@@ -11,16 +11,16 @@
 ## Current Position
 
 **Milestone:** AI Evaluation Pipeline
-**Phase:** 6 of 7 (Evening Orchestration) - In Progress
-**Plan:** 2 of 3 complete
-**Status:** In progress
-**Last Activity:** 2026-01-25 - Completed 06-02-PLAN.md (Celery App Configuration)
+**Phase:** 6 of 7 (Evening Orchestration) - Complete
+**Plan:** 3 of 3 complete
+**Status:** Phase 6 complete
+**Last Activity:** 2026-01-25 - Completed 06-03-PLAN.md (Orchestrator Tasks)
 
 **Progress:**
 ```
-Phases:    [######-] 6/7 (Phase 6 in progress)
-Plans:     [############-----] 12/18 total
-Tasks:     [##------] 2/8 (phase 6 estimated)
+Phases:    [######-] 6/7 (Phase 6 complete)
+Plans:     [##############---] 14/18 total
+Tasks:     [########] 8/8 (phase 6)
 ```
 
 ## Phase Overview
@@ -32,15 +32,15 @@ Tasks:     [##------] 2/8 (phase 6 estimated)
 | 3 | Signal Extraction | Complete |
 | 4 | Historical Trends | Complete |
 | 5 | Verdict Generation | Complete |
-| 6 | Evening Orchestration | In Progress |
+| 6 | Evening Orchestration | Complete |
 | 7 | Smart Notifications | Pending |
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 12 |
-| Tasks completed | 37 |
+| Plans completed | 14 |
+| Tasks completed | 42 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -87,11 +87,16 @@ Tasks:     [##------] 2/8 (phase 6 estimated)
 | Three tone tiers for verdicts | supportive_only/light_edge/full_edge maps to mood classification | 2026-01-25 |
 | Mock fallback without API key | Development without API costs using MockMoodClassifier/MockVerdictGenerator | 2026-01-25 |
 | celeryconfig.py in backend root | Celery config_from_object loads from Python path; backend root is on path | 2026-01-25 |
+| Unique constraint user_date | One analysis per user per day for idempotency | 2026-01-25 |
+| Retry strategy exponential backoff | Max 3 retries with 1 hour max delay and jitter | 2026-01-25 |
+| zoneinfo for timezone handling | Per-user timezone conversion using Python stdlib | 2026-01-25 |
+| Failed analysis retry allowed | Failed analyses can be retried; completed ones are skipped | 2026-01-25 |
 
 ### Open TODOs
 
 - Set OPENAI_API_KEY environment variable before using voice transcription
 - Set ANTHROPIC_API_KEY environment variable before using LLM score enhancement and extraction
+- Full pipeline integration in AnalysisOrchestrator.run_analysis() (connects extraction, scoring, verdicts)
 
 ### Blockers
 
@@ -105,11 +110,11 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-25 - Completed Celery App Configuration (06-02)
-**Stopped At:** Plan 06-02 complete - Ready for Plan 06-03 (Orchestrator Task)
+**Last Session:** 2026-01-25 - Completed Orchestrator Tasks (06-03)
+**Stopped At:** Phase 6 complete - Ready for Phase 7 (Smart Notifications)
 **Resume File:** None
 
-**Next Action:** Execute Plan 06-03 (Orchestrator Task Implementation)
+**Next Action:** Begin Phase 7 (Smart Notifications) planning/execution
 
 **Context to Preserve:**
 - **Phase 1 (Voice) complete:** POST /api/v1/voice/transcribe for voice journaling
@@ -117,6 +122,7 @@ From research/SUMMARY.md:
 - **Phase 3 (Extraction) complete:** Full extraction pipeline operational and integrated
 - **Phase 4 (Trends) complete:** Historical trend analysis operational
 - **Phase 5 (Verdicts) complete:** Mood-aware verdict generation operational
+- **Phase 6 (Orchestration) complete:** Evening analysis scheduling operational
 - **ScoringService orchestrates:** deterministic -> LLM -> comparison -> streaks -> persistence
 - **Scoring endpoints:** POST /scores/score, GET /scores/today, GET /scores/{date}, GET /streaks/all, GET /history
 - **Trends endpoints:** GET /trends/, GET /trends/{goal_category}
@@ -147,7 +153,10 @@ From research/SUMMARY.md:
 - **Celery app configured:** celery_app.py with Redis broker, celeryconfig.py with beat schedule
 - **Beat schedule:** check_due_analyses task runs every minute
 - **Task routing:** orchestrator tasks to default queue, analysis tasks to analysis queue
-- **Tasks package:** app.tasks ready for task module additions
+- **Tasks package:** app.tasks with orchestrator module
+- **AnalysisRun model:** Tracks analysis executions with status, retries, timing
+- **AnalysisOrchestrator:** Coordinates evening analysis pipeline
+- **Celery tasks:** check_due_analyses (periodic), run_user_analysis (with retries), run_manual_analysis (API trigger)
 - pgvector 0.8+ already configured for embeddings
 
 ---
