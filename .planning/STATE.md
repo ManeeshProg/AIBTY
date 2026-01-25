@@ -1,6 +1,6 @@
 # Project State: Am I Better Than Yesterday?
 
-**Last Updated:** 2026-01-21
+**Last Updated:** 2026-01-25
 
 ## Project Reference
 
@@ -11,16 +11,16 @@
 ## Current Position
 
 **Milestone:** AI Evaluation Pipeline
-**Phase:** 3 of 7 (Signal Extraction) - COMPLETE
-**Plan:** 3 of 3 complete
-**Status:** Phase 3 complete
-**Last Activity:** 2026-01-21 - Completed 03-03-PLAN.md (Signal Extraction Integration)
+**Phase:** 4 of 7 (Historical Trends) - COMPLETE
+**Plan:** 1 of 1 complete
+**Status:** Phase 4 complete
+**Last Activity:** 2026-01-25 - Completed 04-01-PLAN.md (Historical Trends)
 
 **Progress:**
 ```
-Phases:    [###----] 3/7 (Phase 3 complete)
-Plans:     [#######----------] 7/18 total
-Tasks:     [####] 4/4 (plan 03-03)
+Phases:    [####---] 4/7 (Phase 4 complete)
+Plans:     [########---------] 8/18 total
+Tasks:     [###] 3/3 (plan 04-01)
 ```
 
 ## Phase Overview
@@ -30,7 +30,7 @@ Tasks:     [####] 4/4 (plan 03-03)
 | 1 | Voice Transcription | Complete |
 | 2 | Scoring Foundation | Complete |
 | 3 | Signal Extraction | Complete |
-| 4 | Historical Trends | Pending |
+| 4 | Historical Trends | Complete |
 | 5 | Verdict Generation | Pending |
 | 6 | Evening Orchestration | Pending |
 | 7 | Smart Notifications | Pending |
@@ -39,8 +39,8 @@ Tasks:     [####] 4/4 (plan 03-03)
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 7 |
-| Tasks completed | 22 |
+| Plans completed | 8 |
+| Tasks completed | 25 |
 | Blockers encountered | 0 |
 | Research pivots | 0 |
 
@@ -76,6 +76,10 @@ Tasks:     [####] 4/4 (plan 03-03)
 | Extraction runs on all journal save operations | Ensures extracted metrics always reflect current journal content | 2026-01-21 |
 | Clear metrics before re-extraction | Idempotent extraction - editing journals doesn't create duplicates | 2026-01-21 |
 | PUT routes through create_or_update | Single code path ensures extraction consistency | 2026-01-21 |
+| Sparse trend data (no gap filling) | Frontend handles missing days; keeps API simple and flexible | 2026-01-25 |
+| Pre-computed trend direction | Mobile doesn't calculate; API returns "improving"/"declining"/"stable"/"insufficient_data" | 2026-01-25 |
+| 5% threshold for trend changes | Matches SAME_THRESHOLD logic; prevents noise in week-over-week comparisons | 2026-01-25 |
+| Week = 7 days, not calendar week | Consistent window regardless of query day | 2026-01-25 |
 
 ### Open TODOs
 
@@ -94,18 +98,22 @@ From research/SUMMARY.md:
 
 ## Session Continuity
 
-**Last Session:** 2026-01-21 - Completed Signal Extraction Integration (03-03)
-**Stopped At:** Phase 3 complete - Ready for Phase 4 (Historical Trends)
+**Last Session:** 2026-01-25 - Completed Historical Trends (04-01)
+**Stopped At:** Phase 4 complete - Ready for Phase 5 (Verdict Generation)
 **Resume File:** None
 
-**Next Action:** Begin Phase 4 (Historical Trends) planning/execution
+**Next Action:** Begin Phase 5 (Verdict Generation) planning/execution
 
 **Context to Preserve:**
 - **Phase 1 (Voice) complete:** POST /api/v1/voice/transcribe for voice journaling
 - **Phase 2 (Scoring) complete:** Full scoring pipeline operational
 - **Phase 3 (Extraction) complete:** Full extraction pipeline operational and integrated
+- **Phase 4 (Trends) complete:** Historical trend analysis operational
 - **ScoringService orchestrates:** deterministic -> LLM -> comparison -> streaks -> persistence
 - **Scoring endpoints:** POST /scores/score, GET /scores/today, GET /scores/{date}, GET /streaks/all, GET /history
+- **Trends endpoints:** GET /trends/, GET /trends/{goal_category}
+- **TrendService:** get_goal_trend(), get_all_goals_trends(), calculate_week_over_week()
+- **Trend schemas:** TrendDataPoint, WeekOverWeekComparison, GoalTrendRead, TrendsResponse
 - **DeterministicScorer:** Keyword matching, effort detection, base scoring (0-100)
 - **LLMScoreEnhancer:** Contextual adjustment within +/-20% guardrails using Claude Sonnet 4
 - **ExtractionAgent:** Claude Sonnet 4 + instructor for structured activity extraction
@@ -128,4 +136,4 @@ From research/SUMMARY.md:
 
 ---
 
-*State updated: 2026-01-21*
+*State updated: 2026-01-25*
