@@ -1,37 +1,39 @@
 import instructor
-from anthropic import Anthropic
+from openai import AzureOpenAI
 from app.ai_pipeline.schemas.extraction import ExtractionResult
 from app.core.config import settings
 
 
 class ExtractionAgent:
     """
-    Claude-based agent for extracting structured activities from journal text.
+    Azure OpenAI-based agent for extracting structured activities from journal text.
 
     Uses instructor library for automatic Pydantic parsing and retry logic.
     """
 
-    def __init__(self, api_key: str | None = None):
+    def __init__(self):
         """
-        Initialize extraction agent with Anthropic API key.
-
-        Args:
-            api_key: Anthropic API key. Defaults to settings.ANTHROPIC_API_KEY
+        Initialize extraction agent with Azure OpenAI credentials from settings.
         """
-        self.api_key = api_key or settings.ANTHROPIC_API_KEY
-        if not self.api_key:
+        if not settings.AZURE_OPENAI_API_KEY:
             raise ValueError(
-                "ANTHROPIC_API_KEY is required. Set it in environment or pass to constructor."
+                "AZURE_OPENAI_API_KEY is required. Set it in environment."
             )
 
-        # Patch Anthropic client with instructor for structured outputs
-        self.client = instructor.from_anthropic(Anthropic(api_key=self.api_key))
+        # Create Azure OpenAI client and wrap with instructor
+        azure_client = AzureOpenAI(
+            api_key=settings.AZURE_OPENAI_API_KEY,
+            api_version=settings.AZURE_OPENAI_API_VERSION,
+            azure_endpoint=settings.AZURE_OPENAI_API_BASE,
+        )
+        self.client = instructor.from_openai(azure_client)
+        self.deployment = settings.AZURE_OPENAI_DEPLOYMENT
 
     def extract(self, text: str) -> ExtractionResult:
         """
         Extract structured activities from journal entry text.
 
-        Uses Claude Sonnet 4 to identify activities with numeric values,
+        Uses Gemini to identify activities with numeric values,
         categorize them, and provide evidence and confidence scores.
 
         Args:
@@ -66,20 +68,12 @@ Categories:
 - creativity: writing time, art projects, music practice, creative work
 - social: conversations, networking events, quality time with others"""
 
-        user_prompt = f"Extract all quantifiable activities from this journal entry:\n\n{text}"
+        user_prompt = f"{system_prompt}\n\nExtract all quantifiable activities from this journal entry:\n\n{text}"
 
         # Use instructor to get structured output with automatic retries
-        result = self.client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=4096,
-            temperature=0.2,  # Lower temperature for more consistent extraction
-            system=system_prompt,
-            messages=[
-                {
-                    "role": "user",
-                    "content": user_prompt
-                }
-            ],
+        result = self.client.chat.completions.create(
+            model=self.deployment,
+            messages=[{"role": "user", "content": user_prompt}],
             response_model=ExtractionResult,
         )
 
