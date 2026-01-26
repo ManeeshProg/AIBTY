@@ -1,6 +1,6 @@
-"""Verdict generation agent using Claude with instructor."""
+"""Verdict generation agent using Azure OpenAI with instructor."""
 import instructor
-from anthropic import Anthropic
+from openai import AzureOpenAI
 from app.core.config import settings
 from app.ai_pipeline.schemas.verdict import Verdict, VerdictInput, VerdictType, ActivityReference, TomorrowAction
 from app.ai_pipeline.prompts.verdict_generation import build_verdict_prompt
@@ -10,21 +10,25 @@ class VerdictGenerator:
     """
     Generates emotional verdicts with activity-specific messaging.
 
-    Uses Claude to create personalized daily verdicts that:
+    Uses Azure OpenAI to create personalized daily verdicts that:
     - Reference specific activities (never generic)
     - Adapt tone based on mood tier
     - Include actionable guidance for tomorrow
     """
 
-    def __init__(self, api_key: str | None = None):
-        """Initialize with Anthropic API key."""
-        self.api_key = api_key or settings.ANTHROPIC_API_KEY
-        if not self.api_key:
+    def __init__(self):
+        """Initialize with Azure OpenAI credentials from settings."""
+        if not settings.AZURE_OPENAI_API_KEY:
             raise ValueError(
-                "ANTHROPIC_API_KEY is required. Set it in environment or pass to constructor."
+                "AZURE_OPENAI_API_KEY is required. Set it in environment."
             )
-        self.client = instructor.from_anthropic(Anthropic(api_key=self.api_key))
-        self.model = "claude-sonnet-4-20250514"
+        azure_client = AzureOpenAI(
+            api_key=settings.AZURE_OPENAI_API_KEY,
+            api_version=settings.AZURE_OPENAI_API_VERSION,
+            azure_endpoint=settings.AZURE_OPENAI_API_BASE,
+        )
+        self.client = instructor.from_openai(azure_client)
+        self.deployment = settings.AZURE_OPENAI_DEPLOYMENT
 
     def generate(
         self,
@@ -53,8 +57,7 @@ class VerdictGenerator:
         )
 
         result = self.client.chat.completions.create(
-            model=self.model,
-            max_tokens=800,
+            model=self.deployment,
             messages=[{"role": "user", "content": prompt}],
             response_model=Verdict
         )
