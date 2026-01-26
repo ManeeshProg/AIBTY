@@ -1,6 +1,6 @@
 """Mood classification agent for safety-first verdict generation."""
 import instructor
-from anthropic import Anthropic
+from openai import AzureOpenAI
 from app.core.config import settings
 from app.ai_pipeline.schemas.mood import MoodClassification, MoodLevel
 from app.ai_pipeline.prompts.mood_classification import MOOD_CLASSIFICATION_PROMPT
@@ -21,21 +21,22 @@ class MoodClassifier:
     Crisis flag overrides everything - if detected, always supportive only.
     """
 
-    def __init__(self, api_key: str | None = None):
+    def __init__(self):
         """
-        Initialize mood classifier with Anthropic API key.
-
-        Args:
-            api_key: Anthropic API key. Defaults to settings.ANTHROPIC_API_KEY
+        Initialize mood classifier with Azure OpenAI credentials from settings.
         """
-        self.api_key = api_key or settings.ANTHROPIC_API_KEY
-        if not self.api_key:
+        if not settings.AZURE_OPENAI_API_KEY:
             raise ValueError(
-                "ANTHROPIC_API_KEY is required. Set it in environment or pass to constructor."
+                "AZURE_OPENAI_API_KEY is required. Set it in environment."
             )
 
-        self.client = instructor.from_anthropic(Anthropic(api_key=self.api_key))
-        self.model = "claude-sonnet-4-20250514"
+        azure_client = AzureOpenAI(
+            api_key=settings.AZURE_OPENAI_API_KEY,
+            api_version=settings.AZURE_OPENAI_API_VERSION,
+            azure_endpoint=settings.AZURE_OPENAI_API_BASE,
+        )
+        self.client = instructor.from_openai(azure_client)
+        self.deployment = settings.AZURE_OPENAI_DEPLOYMENT
 
     async def classify(
         self,
@@ -59,8 +60,7 @@ class MoodClassifier:
 
         # Use instructor for structured output
         result = self.client.chat.completions.create(
-            model=self.model,
-            max_tokens=500,
+            model=self.deployment,
             messages=[{"role": "user", "content": prompt}],
             response_model=MoodClassification
         )
