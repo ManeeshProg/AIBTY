@@ -1,7 +1,7 @@
-"""LLM-based score enhancement using Claude via instructor."""
+"""LLM-based score enhancement using Azure OpenAI via instructor."""
 
 from pydantic import BaseModel, Field, field_validator
-import anthropic
+from openai import AzureOpenAI
 import instructor
 from app.core.config import settings
 from app.ai_pipeline.scoring.schemas import GoalScoreOutput, ScoringResult
@@ -29,23 +29,25 @@ class EnhancedScore(BaseModel):
 
 class LLMScoreEnhancer:
     """
-    Enhances deterministic scores using Claude for contextual understanding.
+    Enhances deterministic scores using Azure OpenAI for contextual understanding.
 
     Uses instructor library for structured outputs with automatic retries.
     Enforces +/-20 point adjustment guardrails.
     """
 
-    def __init__(self, api_key: str | None = None):
-        """Initialize with Anthropic API key."""
-        self.api_key = api_key or settings.ANTHROPIC_API_KEY
-        if not self.api_key:
-            raise ValueError("ANTHROPIC_API_KEY not configured")
+    def __init__(self):
+        """Initialize with Azure OpenAI credentials from settings."""
+        if not settings.AZURE_OPENAI_API_KEY:
+            raise ValueError("AZURE_OPENAI_API_KEY not configured")
 
-        # Create instructor-wrapped Anthropic client
-        self.client = instructor.from_anthropic(
-            anthropic.Anthropic(api_key=self.api_key)
+        # Create Azure OpenAI client and wrap with instructor
+        azure_client = AzureOpenAI(
+            api_key=settings.AZURE_OPENAI_API_KEY,
+            api_version=settings.AZURE_OPENAI_API_VERSION,
+            azure_endpoint=settings.AZURE_OPENAI_API_BASE,
         )
-        self.model = "claude-sonnet-4-20250514"
+        self.client = instructor.from_openai(azure_client)
+        self.deployment = settings.AZURE_OPENAI_DEPLOYMENT
 
     def enhance_score(
         self,
@@ -85,12 +87,11 @@ class LLMScoreEnhancer:
             max_score=max_score
         )
 
-        # Call Claude with instructor for structured output
-        response = self.client.messages.create(
-            model=self.model,
-            max_tokens=500,
-            system=SCORE_ENHANCEMENT_SYSTEM,
-            messages=[{"role": "user", "content": prompt}],
+        # Call Azure OpenAI with instructor for structured output
+        full_prompt = f"{SCORE_ENHANCEMENT_SYSTEM}\n\n{prompt}"
+        response = self.client.chat.completions.create(
+            model=self.deployment,
+            messages=[{"role": "user", "content": full_prompt}],
             response_model=EnhancedScore
         )
 
